@@ -1,6 +1,7 @@
 package tk.booky.obfuscator.transformer;
 // Created by booky10 in Obfuscator (18:36 28.10.20)
 
+import joptsimple.internal.Strings;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -12,13 +13,7 @@ import java.util.ArrayList;
 
 public class CrasherTransformer extends AbstractTransformer {
 
-    private static final String EMPTY_STRINGS;
-
-    static {
-        StringBuilder builder = new StringBuilder();
-        for (int j = 0; j < 50000; j++) builder.append("\n");
-        EMPTY_STRINGS = builder.toString();
-    }
+    private static final String EMPTY_STRINGS = Strings.repeat('\n', 50000);
 
     public CrasherTransformer(Obfuscator obfuscator) {
         super(obfuscator);

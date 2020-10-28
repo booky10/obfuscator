@@ -20,7 +20,7 @@ public class Obfuscator {
     private final Random random;
     private final List<ClassNode> classes = new ArrayList<>(), newClasses = new ArrayList<>();
 
-    public Obfuscator(File inputFile, File outputFile) throws IOException {
+    public Obfuscator(File inputFile, File outputFile, List<String> renamingExcluded) throws IOException {
         random = new Random();
 
         List<AbstractTransformer> transformers = new ArrayList<>();
@@ -30,25 +30,26 @@ public class Obfuscator {
         transformers.add(new AccessTransformer(this));
         transformers.add(new ShuffleTransformer(this));
         transformers.add(new CrasherTransformer(this));
+        transformers.add(new RenamingTransformer(this, renamingExcluded));
 
         JarFile inputJar = new JarFile(inputFile);
 
         try (JarOutputStream output = new JarOutputStream(new FileOutputStream(outputFile))) {
             System.out.println("Reading jar...");
 
-            for (Enumeration<JarEntry> iter = inputJar.entries(); iter.hasMoreElements(); ) {
-                JarEntry entry = iter.nextElement();
+            for (Enumeration<JarEntry> iterator = inputJar.entries(); iterator.hasMoreElements(); ) {
+                JarEntry entry = iterator.nextElement();
 
-                try (InputStream in = inputJar.getInputStream(entry)) {
+                try (InputStream input = inputJar.getInputStream(entry)) {
                     if (entry.getName().endsWith(".class")) {
-                        ClassReader reader = new ClassReader(in);
+                        ClassReader reader = new ClassReader(input);
                         ClassNode classNode = new ClassNode();
 
                         reader.accept(classNode, 0);
                         classes.add(classNode);
                     } else {
                         output.putNextEntry(new JarEntry(entry.getName()));
-                        StreamUtils.copy(in, output);
+                        StreamUtils.copy(input, output);
                     }
                 }
             }
