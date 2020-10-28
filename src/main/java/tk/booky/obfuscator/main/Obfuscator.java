@@ -29,6 +29,7 @@ public class Obfuscator {
         transformers.add(new JunkFieldTransformer(this));
         transformers.add(new AccessTransformer(this));
         transformers.add(new ShuffleTransformer(this));
+        transformers.add(new CrasherTransformer(this));
 
         JarFile inputJar = new JarFile(inputFile);
 
