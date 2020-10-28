@@ -13,6 +13,7 @@ public class StringTransformer extends AbstractTransformer {
 
     private static final Integer PARTITION_BITS = 10, PARTITION_SIZE = 1 << PARTITION_BITS, PARTITION_MASK = PARTITION_SIZE - 1;
     private final List<String> strings = new ArrayList<>();
+    private final Integer runnerID = obfuscator.getRandom().nextInt(10000);
 
     public StringTransformer(Obfuscator obfuscator) {
         super(obfuscator);
@@ -36,13 +37,13 @@ public class StringTransformer extends AbstractTransformer {
                 }
 
                 int index = id & PARTITION_MASK;
-                int classId = id >> PARTITION_BITS;
+                int classID = id >> PARTITION_BITS;
                 int mask = (short) random.nextInt();
 
                 int a = (short) random.nextInt() & mask | index;
                 int b = (short) random.nextInt() & ~mask | index;
 
-                method.instructions.insertBefore(insn, new FieldInsnNode(Opcodes.GETSTATIC, "generated/Strings" + classId, "strings", "[Ljava/lang/String;"));
+                method.instructions.insertBefore(insn, new FieldInsnNode(Opcodes.GETSTATIC, "generated/Strings" + classID + runnerID, "strings", "[Ljava/lang/String;"));
                 method.instructions.insertBefore(insn, AsmUtils.pushInt(a));
                 method.instructions.insertBefore(insn, AsmUtils.pushInt(b));
                 method.instructions.insertBefore(insn, new InsnNode(Opcodes.IAND));
@@ -55,18 +56,18 @@ public class StringTransformer extends AbstractTransformer {
 
     @Override
     public void after() {
-        for (int classId = 0; classId <= strings.size() >> PARTITION_BITS; classId++) {
+        for (int classID = 0; classID <= strings.size() >> PARTITION_BITS; classID++) {
             ClassNode classNode = new ClassNode();
             classNode.version = Opcodes.V1_8;
             classNode.access = Opcodes.ACC_PUBLIC;
-            classNode.name = "generated/Strings" + classId;
+            classNode.name = "generated/Strings" + classID + runnerID;
             classNode.superName = "java/lang/Object";
 
             classNode.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, "strings", "[Ljava/lang/String;", null, null));
             MethodNode clinit = new MethodNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, "<clinit>", "()V", null, null);
             classNode.methods.add(clinit);
 
-            int start = classId << PARTITION_BITS;
+            int start = classID << PARTITION_BITS;
             int end = Math.min(start + PARTITION_SIZE, strings.size());
 
             clinit.instructions.add(AsmUtils.pushInt(end - start));
