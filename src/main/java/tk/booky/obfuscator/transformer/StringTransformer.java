@@ -83,7 +83,7 @@ public class StringTransformer extends AbstractTransformer {
             clinit.instructions.add(new FieldInsnNode(Opcodes.PUTSTATIC, classNode.name, "strings", "[Ljava/lang/String;"));
             clinit.instructions.add(new InsnNode(Opcodes.RETURN));
 
-            obfuscator.addNewClass(classNode);
+            obfuscator.addClass(classNode);
         }
     }
 }

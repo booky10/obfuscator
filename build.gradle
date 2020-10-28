@@ -10,7 +10,8 @@ repositories {
 
 dependencies {
     implementation 'net.sf.jopt-simple:jopt-simple:5.0.2'
-    implementation 'org.ow2.asm:asm-debug-all:5.0.3'
+    implementation 'org.ow2.asm:asm-debug-all:5.2'
+    implementation 'org.ow2.asm:asm-commons:9.0'
 }
 
 group = 'tk.booky'

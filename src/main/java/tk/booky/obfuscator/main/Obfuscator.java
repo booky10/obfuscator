@@ -18,19 +18,19 @@ import java.util.jar.JarOutputStream;
 public class Obfuscator {
 
     private final Random random;
-    private final List<ClassNode> classes = new ArrayList<>(), newClasses = new ArrayList<>();
+    private final List<ClassNode> classes = new ArrayList<>();
 
     public Obfuscator(File inputFile, File outputFile, List<String> renamingExcluded) throws IOException {
         random = new Random();
 
         List<AbstractTransformer> transformers = new ArrayList<>();
+        transformers.add(new RenamingTransformer(this, renamingExcluded));
         transformers.add(new ConstantTransformer(this));
         transformers.add(new StringTransformer(this));
         transformers.add(new JunkFieldTransformer(this));
         transformers.add(new AccessTransformer(this));
         transformers.add(new ShuffleTransformer(this));
-        transformers.add(new CrasherTransformer(this));
-        transformers.add(new RenamingTransformer(this, renamingExcluded));
+        //transformers.add(new CrasherTransformer(this));
 
         JarFile inputJar = new JarFile(inputFile);
 
@@ -60,21 +60,13 @@ public class Obfuscator {
             for (AbstractTransformer transformer : transformers) {
                 System.out.println("Running " + transformer.getClass().getSimpleName() + "...");
                 classes.forEach(transformer::visit);
+                transformer.afterVisit();
             }
             for (AbstractTransformer transformer : transformers) transformer.after();
 
             System.out.println("Writing classes...");
             for (ClassNode classNode : classes) {
                 ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-                classNode.accept(writer);
-
-                output.putNextEntry(new JarEntry(classNode.name + ".class"));
-                output.write(writer.toByteArray());
-            }
-
-            System.out.println("Writing generated classes...");
-            for (ClassNode classNode : newClasses) {
-                ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
                 classNode.accept(writer);
 
                 output.putNextEntry(new JarEntry(classNode.name + ".class"));
@@ -91,7 +83,11 @@ public class Obfuscator {
         return classes;
     }
 
-    public void addNewClass(ClassNode classNode) {
-        newClasses.add(classNode);
+    public void removeClass(ClassNode classNode) {
+        classes.removeIf(node -> node.name.equals(classNode.name));
+    }
+
+    public void addClass(ClassNode classNode) {
+        classes.add(classNode);
     }
 }

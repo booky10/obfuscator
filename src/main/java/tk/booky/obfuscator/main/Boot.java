@@ -6,6 +6,7 @@ import joptsimple.OptionSet;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,6 +34,9 @@ public class Boot {
         File input = (File) options.valueOf("input");
         File output = (File) options.valueOf("output");
         List<String> renamingExcluded = Arrays.asList(((String) options.valueOf("renaming-excluded")).split(","));
+
+        if (renamingExcluded.size() == 1 && renamingExcluded.get(0).equalsIgnoreCase("none"))
+            renamingExcluded=new ArrayList<>();
 
         try {
             new Obfuscator(input, output, renamingExcluded);
