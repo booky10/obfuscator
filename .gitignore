@@ -1,5 +1,11 @@
 .idea/
-MC.jar
-MC.obf.jar
 *.iml
 target/
+build/
+.gradle
+
+*.jar
+*.class
+
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties

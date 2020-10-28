@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '6.0.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'net.sf.jopt-simple:jopt-simple:5.0.2'
+    implementation 'org.ow2.asm:asm-debug-all:5.0.3'
+}
+
+group = 'tk.booky'
+version = '1.0-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+application {
+    mainClassName = 'tk.booky.obfuscator.main.Boot'
+}
+
+jar {
+    manifest {
+        attributes['Main-Class'] = 'tk.booky.obfuscator.main.Boot'
+    }
+}
