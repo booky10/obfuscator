@@ -24,13 +24,13 @@ public class Obfuscator {
         random = new Random();
 
         List<AbstractTransformer> transformers = new ArrayList<>();
+        transformers.add(new StringTransformer(this));
         transformers.add(new RenamingTransformer(this, renamingExcluded));
         transformers.add(new ConstantTransformer(this));
-        transformers.add(new StringTransformer(this));
         transformers.add(new JunkFieldTransformer(this));
         transformers.add(new AccessTransformer(this));
         transformers.add(new ShuffleTransformer(this));
-        //transformers.add(new CrasherTransformer(this));
+        transformers.add(new CrasherTransformer(this));
 
         JarFile inputJar = new JarFile(inputFile);
 

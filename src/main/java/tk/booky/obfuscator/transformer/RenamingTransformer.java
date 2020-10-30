@@ -32,7 +32,7 @@ public class RenamingTransformer extends AbstractTransformer {
 
     @Override
     public void visit(ClassNode classNode) {
-        if (!enabled || isExcluded(classNode)) return;
+        if (!enabled) return;
         classes.add(classNode);
     }
 
@@ -42,6 +42,8 @@ public class RenamingTransformer extends AbstractTransformer {
         Remapper simpleRemapper = new MemberRemapper(generateMappings());
 
         for (ClassNode classNode : classes) {
+            obfuscator.removeClass(classNode);
+
             ClassNode copy = new ClassNode();
             classNode.accept(new ClassRemapper(copy, simpleRemapper));
 
@@ -50,7 +52,6 @@ public class RenamingTransformer extends AbstractTransformer {
             if (copy.fields != null)
                 for (int i = 0; i < copy.fields.size(); i++) classNode.fields.set(i, copy.fields.get(i));
 
-            obfuscator.removeClass(classNode);
             obfuscator.addClass(copy);
         }
     }
@@ -71,17 +72,30 @@ public class RenamingTransformer extends AbstractTransformer {
                 fieldNode.access |= Opcodes.ACC_PUBLIC;
             }
 
+            String newClassName = getPackageName() + getSimpleName(classNode);
+            boolean nativeMethod = false;
+
+            List<MethodNode> methodNodes = new ArrayList<>();
             for (MethodNode methodNode : classNode.methods) {
-                if (methodNode.name.equals("main")) continue;
-                if (methodNode.name.equals("premain")) continue;
-                if (methodNode.name.startsWith("<")) continue;
-                if (Modifier.isNative(methodNode.access)) continue;
+                if (methodNode.name.equals("main")) nativeMethod = true;
+                else if (methodNode.name.equals("premain")) nativeMethod = true;
+                else if (methodNode.name.startsWith("<")) nativeMethod = true;
+                else if (Modifier.isNative(methodNode.access)) nativeMethod = true;
+                else methodNodes.add(methodNode);
+            }
 
-                classNode.access &= ~Opcodes.ACC_PRIVATE;
-                classNode.access &= ~Opcodes.ACC_PROTECTED;
-                classNode.access |= Opcodes.ACC_PUBLIC;
+            classNode.access &= ~Opcodes.ACC_PRIVATE;
+            classNode.access &= ~Opcodes.ACC_PROTECTED;
+            classNode.access |= Opcodes.ACC_PUBLIC;
 
-                mappings.put(classNode.name, getPackageName() + getSimpleName(classNode));
+            if (!isExcluded(classNode)) {
+                for (MethodNode methodNode : methodNodes) {
+                    String newMethodName = "__junk_method" + Math.abs(random.nextLong());
+                    mappings.put(classNode.name + '.' + methodNode.name + methodNode.desc, newMethodName);
+                }
+
+                if (!nativeMethod)
+                    mappings.put(classNode.name, newClassName);
             }
         }
 

@@ -20,7 +20,7 @@ public class JunkFieldTransformer extends AbstractTransformer {
             ClassNode target = RandomUtils.choice(random, obfuscator.getClasses());
             if ((target.access & Opcodes.ACC_INTERFACE) != 0) continue;
 
-            String name = "__junk" + Math.abs(random.nextLong());
+            String name = "__junk_field" + Math.abs(random.nextLong());
             target.fields.add(new FieldNode(Opcodes.ACC_PUBLIC, name, "L" + classNode.name + ";", null, null));
         }
     }

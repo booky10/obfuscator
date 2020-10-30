@@ -13,7 +13,7 @@ public class StringTransformer extends AbstractTransformer {
 
     private static final Integer PARTITION_BITS = 10, PARTITION_SIZE = 1 << PARTITION_BITS, PARTITION_MASK = PARTITION_SIZE - 1;
     private final List<String> strings = new ArrayList<>();
-    private final Integer runnerID = random.nextInt(10000);
+    private final Long runnerID = Math.abs(random.nextLong());
 
     public StringTransformer(Obfuscator obfuscator) {
         super(obfuscator);
