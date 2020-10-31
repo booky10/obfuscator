@@ -16,7 +16,7 @@ dependencies {
 }
 
 group = 'tk.booky'
-version = '2.0-SNAPSHOT'
+version = '2.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 application {
