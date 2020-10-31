@@ -3,10 +3,6 @@ package tk.booky.obfuscator.gui;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
-import tk.booky.obfuscator.gui.GuiUtils;
-import tk.booky.obfuscator.gui.JarFileFilter;
-import tk.booky.obfuscator.gui.ThemeManager;
 import tk.booky.obfuscator.main.Boot;
 
 import javax.swing.*;
