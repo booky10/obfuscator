@@ -12,6 +12,7 @@ dependencies {
     implementation 'net.sf.jopt-simple:jopt-simple:5.0.2'
     implementation 'org.ow2.asm:asm-debug-all:5.2'
     implementation 'org.ow2.asm:asm-commons:9.0'
+    implementation 'com.intellij:forms_rt:7.0.3'
 }
 
 group = 'tk.booky'

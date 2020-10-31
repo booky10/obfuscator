@@ -21,6 +21,9 @@ public class Obfuscator {
     private final List<ClassNode> classes = new ArrayList<>();
 
     public Obfuscator(File inputFile, File outputFile, List<String> renamingExcluded) throws IOException {
+        System.out.println(inputFile);
+        if (!inputFile.exists()) throw new IOException("Input jar does not exits!");
+
         Thread.currentThread().setName("Obfuscator Thread");
         random = new Random();
 
