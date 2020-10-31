@@ -1,46 +1,17 @@
 package tk.booky.obfuscator.main;
 
-import joptsimple.OptionException;
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import tk.booky.obfuscator.arguments.ArgumentParser;
+import tk.booky.obfuscator.arguments.ProgramOptions;
+import tk.booky.obfuscator.gui.ObfuscatorGui;
 
 public class Boot {
 
     public static void main(String[] args) {
-        OptionParser parser = new OptionParser();
-        parser.accepts("input").withRequiredArg().required().ofType(File.class);
-        parser.accepts("output").withRequiredArg().required().ofType(File.class);
-        parser.accepts("renaming-excluded").withRequiredArg().required().ofType(String.class);
-
-        OptionSet options;
-
         try {
-            options = parser.parse(args);
-            if (options == null) throw new NullPointerException();
-        } catch (OptionException | NullPointerException exception) {
-            System.out.println("Usage: obfuscator --input <input jar> --output <output jar> --renaming-excluded <excluded classes>");
-            System.out.println(exception.getMessage());
-
-            System.exit(-1);
-            return;
-        }
-
-        File input = (File) options.valueOf("input");
-        File output = (File) options.valueOf("output");
-        List<String> renamingExcluded = Arrays.asList(((String) options.valueOf("renaming-excluded")).split(","));
-
-        if (renamingExcluded.size() == 1 && renamingExcluded.get(0).equalsIgnoreCase("none"))
-            renamingExcluded=new ArrayList<>();
-
-        try {
-            new Obfuscator(input, output, renamingExcluded);
-        } catch (IOException exception) {
+            ProgramOptions options = ArgumentParser.parse(args);
+            if (options.isInGuiMode()) new ObfuscatorGui();
+            else new Obfuscator(options.getInput(), options.getOutput(), options.getExcluded());
+        } catch (Throwable exception) {
             exception.printStackTrace();
             System.exit(-1);
         }

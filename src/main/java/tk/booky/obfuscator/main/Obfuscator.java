@@ -21,6 +21,7 @@ public class Obfuscator {
     private final List<ClassNode> classes = new ArrayList<>();
 
     public Obfuscator(File inputFile, File outputFile, List<String> renamingExcluded) throws IOException {
+        Thread.currentThread().setName("Obfuscator Thread");
         random = new Random();
 
         List<AbstractTransformer> transformers = new ArrayList<>();
