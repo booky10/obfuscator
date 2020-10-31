@@ -17,7 +17,7 @@ public abstract class AbstractTransformer {
 
     public abstract void visit(ClassNode classNode);
 
-    public void afterVisit(){
+    public void afterVisit() {
     }
 
     public void after() {

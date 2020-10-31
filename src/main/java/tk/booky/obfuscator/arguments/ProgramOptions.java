@@ -44,7 +44,7 @@ public class ProgramOptions {
         return excluded;
     }
 
-    private void checkForGuiMode(){
+    private void checkForGuiMode() {
         if (isInGuiMode()) throw new IllegalStateException("No input file available, application in Gui mode");
     }
 }
