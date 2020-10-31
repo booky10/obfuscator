@@ -4,6 +4,7 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 import tk.booky.obfuscator.main.Obfuscator;
 import tk.booky.obfuscator.utils.AsmUtils;
+import tk.booky.obfuscator.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -62,6 +63,7 @@ public class StringTransformer extends AbstractTransformer {
             classNode.access = Opcodes.ACC_PUBLIC;
             classNode.name = "Hey/_" + classID + runnerID;
             classNode.superName = "java/lang/Object";
+            classNode.signature = StringUtils.crazyString(obfuscator, 10);
 
             classNode.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, "strings", "[Ljava/lang/String;", null, null));
             MethodNode clinit = new MethodNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, "<clinit>", "()V", null, null);
