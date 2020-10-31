@@ -1,4 +1,4 @@
-package tk.booky.obfuscator.utils.remapping;
+package tk.booky.obfuscator.utils;
 // Created by booky10 in Obfuscator (21:12 28.10.20)
 
 import org.objectweb.asm.commons.SimpleRemapper;

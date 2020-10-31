@@ -8,7 +8,7 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.FieldNode;
 import org.objectweb.asm.tree.MethodNode;
 import tk.booky.obfuscator.main.Obfuscator;
-import tk.booky.obfuscator.utils.remapping.MemberRemapper;
+import tk.booky.obfuscator.utils.MemberRemapper;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
