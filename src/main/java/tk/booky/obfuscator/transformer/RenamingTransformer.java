@@ -79,9 +79,8 @@ public class RenamingTransformer extends AbstractTransformer {
             for (MethodNode methodNode : classNode.methods) {
                 if (methodNode.name.equals("main")) nativeMethod = true;
                 else if (methodNode.name.equals("premain")) nativeMethod = true;
-                else if (methodNode.name.startsWith("<")) nativeMethod = true;
                 else if (Modifier.isNative(methodNode.access)) nativeMethod = true;
-                else methodNodes.add(methodNode);
+                else if (!methodNode.name.startsWith("<")) methodNodes.add(methodNode);
             }
 
             classNode.access &= ~Opcodes.ACC_PRIVATE;
