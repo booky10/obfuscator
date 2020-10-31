@@ -1,6 +1,7 @@
 package tk.booky.obfuscator.arguments;
 // Created by booky10 in Obfuscator (15:35 31.10.20)
 
+import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
@@ -24,20 +25,26 @@ public class ArgumentParser {
         OptionSpec<String> optionRenamingExcluded = options.accepts("renaming-excluded").withRequiredArg().defaultsTo("none");
         options.accepts("gui");
 
-        OptionSpec<String> optionNoneOptions = options.nonOptions();
-        OptionSet optionSet = options.parse(arguments);
-        List<String> noneOptions = new ArrayList<>(optionSet.valuesOf(optionNoneOptions));
+        try {
+            OptionSpec<String> optionNoneOptions = options.nonOptions();
+            OptionSet optionSet = options.parse(arguments);
+            List<String> noneOptions = new ArrayList<>(optionSet.valuesOf(optionNoneOptions));
 
-        if (!noneOptions.isEmpty()) System.out.println("Completely ignored arguments: " + noneOptions);
+            if (!noneOptions.isEmpty()) System.out.println("Completely ignored arguments: " + noneOptions);
 
-        File inputFile = optionSet.valueOf(optionInput);
-        File outputFile = optionSet.valueOf(optionOutput);
+            File inputFile = optionSet.valueOf(optionInput);
+            File outputFile = optionSet.valueOf(optionOutput);
 
-        List<String> renamingExcluded = Arrays.asList(optionSet.valueOf(optionRenamingExcluded).split(","));
-        renamingExcluded = new ArrayList<>(renamingExcluded);
-        renamingExcluded.remove("none");
+            List<String> renamingExcluded = Arrays.asList(optionSet.valueOf(optionRenamingExcluded).split(","));
+            renamingExcluded = new ArrayList<>(renamingExcluded);
+            renamingExcluded.remove("none");
 
-        if (optionSet.has("gui")) return new ProgramOptions();
-        else return new ProgramOptions(inputFile, outputFile, renamingExcluded);
+            if (optionSet.has("gui")) return new ProgramOptions();
+            else return new ProgramOptions(inputFile, outputFile, renamingExcluded);
+        } catch (OptionException exception) {
+            if (exception.getClass().getName().equals("joptsimple.MissingRequiredOptionsException"))
+                return new ProgramOptions();
+            throw new Error(exception);
+        }
     }
 }

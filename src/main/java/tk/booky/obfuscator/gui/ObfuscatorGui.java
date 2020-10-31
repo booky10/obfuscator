@@ -3,10 +3,13 @@ package tk.booky.obfuscator.gui;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import tk.booky.obfuscator.main.Boot;
+import tk.booky.obfuscator.main.Obfuscator;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 public class ObfuscatorGui extends JFrame {
 
@@ -43,13 +46,14 @@ public class ObfuscatorGui extends JFrame {
                 return;
             }
 
+            File input = new File(inputJarText.getText());
+            File output = new File(outputJarText.getText());
+            List<String> renamingExcluded = Arrays.asList(excluded.split(","));
+
             obfuscate.setVisible(false);
             new Thread(() -> {
                 try {
-                    Boot.main(new String[]{
-                            "--input", inputJarText.getText().replace(' ', '_'),
-                            "--output", outputJarText.getText().replace(' ', '_'),
-                            "--renaming-excluded", "'" + excluded.replace(' ', '_') + "'"});
+                    new Obfuscator(input, output, renamingExcluded);
                     JOptionPane.showMessageDialog(this, "Success!\nYou're jar is now obfuscated.", "Finished", JOptionPane.INFORMATION_MESSAGE);
                 } catch (Throwable throwable) {
                     throwable.printStackTrace();
