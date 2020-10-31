@@ -43,7 +43,7 @@ public class StringTransformer extends AbstractTransformer {
                 int a = (short) random.nextInt() & mask | index;
                 int b = (short) random.nextInt() & ~mask | index;
 
-                method.instructions.insertBefore(insn, new FieldInsnNode(Opcodes.GETSTATIC, "generated/Strings" + classID + runnerID, "strings", "[Ljava/lang/String;"));
+                method.instructions.insertBefore(insn, new FieldInsnNode(Opcodes.GETSTATIC, "Hey/_" + classID + runnerID, "strings", "[Ljava/lang/String;"));
                 method.instructions.insertBefore(insn, AsmUtils.pushInt(a));
                 method.instructions.insertBefore(insn, AsmUtils.pushInt(b));
                 method.instructions.insertBefore(insn, new InsnNode(Opcodes.IAND));
@@ -60,7 +60,7 @@ public class StringTransformer extends AbstractTransformer {
             ClassNode classNode = new ClassNode();
             classNode.version = Opcodes.V1_8;
             classNode.access = Opcodes.ACC_PUBLIC;
-            classNode.name = "generated/Strings" + classID + runnerID;
+            classNode.name = "Hey/_" + classID + runnerID;
             classNode.superName = "java/lang/Object";
 
             classNode.fields.add(new FieldNode(Opcodes.ACC_PUBLIC | Opcodes.ACC_STATIC, "strings", "[Ljava/lang/String;", null, null));
