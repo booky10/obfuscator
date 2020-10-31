@@ -72,7 +72,7 @@ public class RenamingTransformer extends AbstractTransformer {
                 fieldNode.access |= Opcodes.ACC_PUBLIC;
             }
 
-            String newClassName = getPackageName() + getSimpleName(classNode);
+            String newClassName = getPackageName() + getRandomClassName(classNode);
             boolean nativeMethod = false;
 
             List<MethodNode> methodNodes = new ArrayList<>();
@@ -101,9 +101,8 @@ public class RenamingTransformer extends AbstractTransformer {
         return mappings;
     }
 
-    private String getSimpleName(ClassNode node) {
-        String[] split = node.name.split("/");
-        return split[split.length - 1];
+    private String getRandomClassName(ClassNode node) {
+        return "_" + node.hashCode() + Math.abs(random.nextLong());
     }
 
     private Pattern compileExcludePattern(String pattern) {
