@@ -63,8 +63,14 @@ public class ArgumentParser {
             else
                 return new ProgramOptions(inputFile, outputFile, renamingExcluded, excludedTransformers, debug);
         } catch (OptionException exception) {
-            if (exception.getClass().getName().equals("joptsimple.MissingRequiredOptionsException"))
-                return new ProgramOptions();
+            if (exception.getClass().getName().equals("joptsimple.MissingRequiredOptionsException")) {
+                if (!Arrays.asList(arguments).contains("--gui")) {
+                    System.err.println("Please specify the required arguments! Use --help to list all possible.");
+                    System.exit(-1);
+                    return null;
+                } else
+                    return new ProgramOptions();
+            }
             throw new Error(exception);
         }
     }
