@@ -81,10 +81,12 @@ public class ObfuscatorGui extends JFrame {
                 obfuscate.setVisible(true);
             }).start();
         });
+
         browseInput.addActionListener(event -> {
             String file = GuiUtils.chooseFile(null, this, new JarFileFilter());
             if (file != null) inputJarText.setText(file);
         });
+
         browseOutput.addActionListener(event -> {
             String file = GuiUtils.chooseFile(null, this, new JarFileFilter());
             if (file != null) outputJarText.setText(file);
