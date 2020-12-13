@@ -9,6 +9,8 @@ import java.io.IOException;
 public class Boot {
 
     public static void main(String[] args) throws IOException {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> System.out.println("Exiting..."), "Shutdown Thread"));
+
         ProgramOptions options = ArgumentParser.parse(args);
         if (options.isInGuiMode())
             new ObfuscatorGui();
