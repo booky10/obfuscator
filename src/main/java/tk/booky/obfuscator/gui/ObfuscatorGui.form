@@ -108,6 +108,7 @@
         <properties>
           <selected value="true"/>
           <text value="Randomize Access"/>
+          <toolTipText value="access"/>
         </properties>
       </component>
       <component id="b2861" class="javax.swing.JCheckBox" binding="constantTransformer">
@@ -117,6 +118,7 @@
         <properties>
           <selected value="true"/>
           <text value="Obfuscate Constants"/>
+          <toolTipText value="constant"/>
         </properties>
       </component>
       <component id="96f67" class="javax.swing.JCheckBox" binding="crasherTransformer">
@@ -126,6 +128,7 @@
         <properties>
           <selected value="true"/>
           <text value="Crash Decompiler"/>
+          <toolTipText value="crasher"/>
         </properties>
       </component>
       <component id="44826" class="javax.swing.JCheckBox" binding="fieldTransformer">
@@ -135,6 +138,7 @@
         <properties>
           <selected value="true"/>
           <text value="Rename Fields"/>
+          <toolTipText value="field"/>
         </properties>
       </component>
       <component id="7be50" class="javax.swing.JCheckBox" binding="renamingTransformer">
@@ -144,6 +148,7 @@
         <properties>
           <selected value="true"/>
           <text value="Rename Classes"/>
+          <toolTipText value="renaming"/>
         </properties>
       </component>
       <component id="39471" class="javax.swing.JCheckBox" binding="shuffleTransformer">
@@ -153,6 +158,7 @@
         <properties>
           <selected value="true"/>
           <text value="Shuffle Components"/>
+          <toolTipText value="shuffle"/>
         </properties>
       </component>
       <component id="bf25d" class="javax.swing.JCheckBox" binding="stringTransformer">
@@ -162,6 +168,7 @@
         <properties>
           <selected value="true"/>
           <text value="Transform Strings"/>
+          <toolTipText value="string"/>
         </properties>
       </component>
     </children>

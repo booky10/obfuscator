@@ -8,8 +8,8 @@ import tk.booky.obfuscator.main.Obfuscator;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class ObfuscatorGui extends JFrame {
@@ -59,11 +59,20 @@ public class ObfuscatorGui extends JFrame {
             File input = new File(inputJarText.getText());
             File output = new File(outputJarText.getText());
             List<String> renamingExcluded = Arrays.asList(excluded.split(","));
+            List<String> excludedTransformers = new ArrayList<>();
+
+            if (accessTransformer.isSelected()) excludedTransformers.add(accessTransformer.getToolTipText());
+            if (constantTransformer.isSelected()) excludedTransformers.add(constantTransformer.getToolTipText());
+            if (crasherTransformer.isSelected()) excludedTransformers.add(crasherTransformer.getToolTipText());
+            if (fieldTransformer.isSelected()) excludedTransformers.add(fieldTransformer.getToolTipText());
+            if (renamingTransformer.isSelected()) excludedTransformers.add(renamingTransformer.getToolTipText());
+            if (shuffleTransformer.isSelected()) excludedTransformers.add(shuffleTransformer.getToolTipText());
+            if (stringTransformer.isSelected()) excludedTransformers.add(stringTransformer.getToolTipText());
 
             obfuscate.setVisible(false);
             new Thread(() -> {
                 try {
-                    new Obfuscator(input, output, renamingExcluded, Collections.emptyList(), false);
+                    new Obfuscator(input, output, renamingExcluded, excludedTransformers, false);
                     JOptionPane.showMessageDialog(this, "Success!\nYou're jar is now obfuscated.", "Finished", JOptionPane.INFORMATION_MESSAGE);
                 } catch (Throwable throwable) {
                     throwable.printStackTrace();
@@ -132,30 +141,37 @@ public class ObfuscatorGui extends JFrame {
         accessTransformer = new JCheckBox();
         accessTransformer.setSelected(true);
         accessTransformer.setText("Randomize Access");
+        accessTransformer.setToolTipText("access");
         panel.add(accessTransformer, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         constantTransformer = new JCheckBox();
         constantTransformer.setSelected(true);
         constantTransformer.setText("Obfuscate Constants");
+        constantTransformer.setToolTipText("constant");
         panel.add(constantTransformer, new GridConstraints(3, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         crasherTransformer = new JCheckBox();
         crasherTransformer.setSelected(true);
         crasherTransformer.setText("Crash Decompiler");
+        crasherTransformer.setToolTipText("crasher");
         panel.add(crasherTransformer, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         fieldTransformer = new JCheckBox();
         fieldTransformer.setSelected(true);
         fieldTransformer.setText("Rename Fields");
+        fieldTransformer.setToolTipText("field");
         panel.add(fieldTransformer, new GridConstraints(4, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         renamingTransformer = new JCheckBox();
         renamingTransformer.setSelected(true);
         renamingTransformer.setText("Rename Classes");
+        renamingTransformer.setToolTipText("renaming");
         panel.add(renamingTransformer, new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         shuffleTransformer = new JCheckBox();
         shuffleTransformer.setSelected(true);
         shuffleTransformer.setText("Shuffle Components");
+        shuffleTransformer.setToolTipText("shuffle");
         panel.add(shuffleTransformer, new GridConstraints(5, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         stringTransformer = new JCheckBox();
         stringTransformer.setSelected(true);
         stringTransformer.setText("Transform Strings");
+        stringTransformer.setToolTipText("string");
         panel.add(stringTransformer, new GridConstraints(6, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         outputJarLabel.setLabelFor(outputJarText);
         inputJarLabel.setLabelFor(inputJarText);
