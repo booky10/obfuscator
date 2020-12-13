@@ -23,7 +23,10 @@ public class ArgumentParser {
         OptionSpec<File> optionInput = options.accepts("input").withRequiredArg().required().ofType(File.class);
         OptionSpec<File> optionOutput = options.accepts("output").withRequiredArg().required().ofType(File.class);
         OptionSpec<String> optionRenamingExcluded = options.accepts("renaming-excluded").withRequiredArg().defaultsTo("none");
+        OptionSpec<String> optionExcludedTransformers = options.accepts("excluded-transformers").withRequiredArg().defaultsTo("none");
+
         options.accepts("gui");
+        options.accepts("debug");
 
         try {
             OptionSpec<String> optionNoneOptions = options.nonOptions();
@@ -35,16 +38,27 @@ public class ArgumentParser {
             File inputFile = optionSet.valueOf(optionInput);
             File outputFile = optionSet.valueOf(optionOutput);
 
-            List<String> renamingExcluded = Arrays.asList(optionSet.valueOf(optionRenamingExcluded).split(","));
-            renamingExcluded = new ArrayList<>(renamingExcluded);
-            renamingExcluded.remove("none");
+            List<String> renamingExcluded = parseStringList(optionSet, optionRenamingExcluded);
+            List<String> excludedTransformers = parseStringList(optionSet, optionExcludedTransformers);
 
-            if (optionSet.has("gui")) return new ProgramOptions();
-            else return new ProgramOptions(inputFile, outputFile, renamingExcluded);
+            boolean gui = optionSet.has("gui");
+            Boolean debug = optionSet.has("debug");
+
+            if (gui)
+                return new ProgramOptions();
+            else
+                return new ProgramOptions(inputFile, outputFile, renamingExcluded, excludedTransformers, debug);
         } catch (OptionException exception) {
             if (exception.getClass().getName().equals("joptsimple.MissingRequiredOptionsException"))
                 return new ProgramOptions();
             throw new Error(exception);
         }
+    }
+
+    private static List<String> parseStringList(OptionSet set, OptionSpec<String> spec) {
+        List<String> list = Arrays.asList(set.valueOf(spec).split(","));
+        list = new ArrayList<>(list);
+        list.remove("none");
+        return list;
     }
 }

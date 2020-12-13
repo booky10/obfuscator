@@ -21,21 +21,27 @@ public class Obfuscator {
     private final Random random;
     private final List<ClassNode> classes = new ArrayList<>();
 
-    public Obfuscator(File inputFile, File outputFile, List<String> renamingExcluded) throws IOException {
-        System.out.println(inputFile);
+    public Obfuscator(File inputFile, File outputFile, List<String> renamingExcluded, List<String> excludedTransformers, Boolean debug) throws IOException {
         if (!inputFile.exists()) throw new IOException("Input jar does not exits!");
 
         Thread.currentThread().setName("Obfuscator Thread");
         random = new Random();
 
         List<AbstractTransformer> transformers = new ArrayList<>();
-        transformers.add(new StringTransformer(this));
-        transformers.add(new RenamingTransformer(this, renamingExcluded));
-        transformers.add(new ConstantTransformer(this));
-        transformers.add(new JunkFieldTransformer(this));
-        transformers.add(new AccessTransformer(this));
-        transformers.add(new ShuffleTransformer(this));
-        transformers.add(new CrasherTransformer(this));
+        if (!excludedTransformers.contains("string"))
+            transformers.add(new StringTransformer(this));
+        if (!excludedTransformers.contains("renaming"))
+            transformers.add(new RenamingTransformer(this, renamingExcluded));
+        if (!excludedTransformers.contains("constant"))
+            transformers.add(new ConstantTransformer(this));
+        if (!excludedTransformers.contains("field"))
+            transformers.add(new FieldTransformer(this));
+        if (!excludedTransformers.contains("access"))
+            transformers.add(new AccessTransformer(this));
+        if (!excludedTransformers.contains("shuffle"))
+            transformers.add(new ShuffleTransformer(this));
+        if (!excludedTransformers.contains("crasher"))
+            transformers.add(new CrasherTransformer(this));
 
         JarFile inputJar = new JarFile(inputFile);
 
@@ -52,13 +58,11 @@ public class Obfuscator {
 
                         reader.accept(classNode, 0);
                         classes.add(classNode);
-                    } else {
-                        try {
-                            output.putNextEntry(new JarEntry(entry.getName()));
-                            StreamUtils.copy(input, output);
-                        } catch (ZipException exception) {
-                            exception.printStackTrace();
-                        }
+                    } else try {
+                        output.putNextEntry(new JarEntry(entry.getName()));
+                        StreamUtils.copy(input, output);
+                    } catch (ZipException exception) {
+                        exception.printStackTrace();
                     }
                 }
             }

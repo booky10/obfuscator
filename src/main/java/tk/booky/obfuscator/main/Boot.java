@@ -10,7 +10,9 @@ public class Boot {
 
     public static void main(String[] args) throws IOException {
         ProgramOptions options = ArgumentParser.parse(args);
-        if (options.isInGuiMode()) new ObfuscatorGui();
-        else new Obfuscator(options.getInput(), options.getOutput(), options.getExcluded());
+        if (options.isInGuiMode())
+            new ObfuscatorGui();
+        else
+            new Obfuscator(options.getInput(), options.getOutput(), options.getExcluded(), options.getExcludedTransformers(), options.getDebug());
     }
 }

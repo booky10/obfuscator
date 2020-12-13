@@ -6,9 +6,9 @@ import org.objectweb.asm.tree.FieldNode;
 import tk.booky.obfuscator.main.Obfuscator;
 import tk.booky.obfuscator.utils.RandomUtils;
 
-public class JunkFieldTransformer extends AbstractTransformer {
+public class FieldTransformer extends AbstractTransformer {
 
-    public JunkFieldTransformer(Obfuscator obfuscator) {
+    public FieldTransformer(Obfuscator obfuscator) {
         super(obfuscator);
     }
 

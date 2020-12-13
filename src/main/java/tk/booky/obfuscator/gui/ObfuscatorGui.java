@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ObfuscatorGui extends JFrame {
@@ -53,7 +54,7 @@ public class ObfuscatorGui extends JFrame {
             obfuscate.setVisible(false);
             new Thread(() -> {
                 try {
-                    new Obfuscator(input, output, renamingExcluded);
+                    new Obfuscator(input, output, renamingExcluded, Collections.emptyList(),false);
                     JOptionPane.showMessageDialog(this, "Success!\nYou're jar is now obfuscated.", "Finished", JOptionPane.INFORMATION_MESSAGE);
                 } catch (Throwable throwable) {
                     throwable.printStackTrace();
