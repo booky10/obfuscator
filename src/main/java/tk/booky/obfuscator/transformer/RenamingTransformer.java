@@ -42,17 +42,21 @@ public class RenamingTransformer extends AbstractTransformer {
         Remapper simpleRemapper = new MemberRemapper(generateMappings());
 
         for (ClassNode classNode : classes) {
-            obfuscator.removeClass(classNode);
+            try {
+                obfuscator.removeClass(classNode);
 
-            ClassNode copy = new ClassNode();
-            classNode.accept(new ClassRemapper(copy, simpleRemapper));
+                ClassNode copy = new ClassNode();
+                classNode.accept(new ClassRemapper(copy, simpleRemapper));
 
-            if (copy.methods != null)
-                for (int i = 0; i < copy.methods.size(); i++) classNode.methods.set(i, copy.methods.get(i));
-            if (copy.fields != null)
-                for (int i = 0; i < copy.fields.size(); i++) classNode.fields.set(i, copy.fields.get(i));
+                if (copy.methods != null)
+                    for (int i = 0; i < copy.methods.size(); i++) classNode.methods.set(i, copy.methods.get(i));
+                if (copy.fields != null)
+                    for (int i = 0; i < copy.fields.size(); i++) classNode.fields.set(i, copy.fields.get(i));
 
-            obfuscator.addClass(copy);
+                obfuscator.addClass(copy);
+            } catch (NullPointerException exception) {
+                obfuscator.getClasses().add(classNode);
+            }
         }
     }
 

@@ -14,6 +14,7 @@ import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
+import java.util.zip.ZipException;
 
 public class Obfuscator {
 
@@ -52,8 +53,12 @@ public class Obfuscator {
                         reader.accept(classNode, 0);
                         classes.add(classNode);
                     } else {
-                        output.putNextEntry(new JarEntry(entry.getName()));
-                        StreamUtils.copy(input, output);
+                        try {
+                            output.putNextEntry(new JarEntry(entry.getName()));
+                            StreamUtils.copy(input, output);
+                        } catch (ZipException exception) {
+                            exception.printStackTrace();
+                        }
                     }
                 }
             }
