@@ -43,6 +43,8 @@ public class ObfuscatorGui extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         obfuscate.addActionListener(event -> {
+            if (!obfuscate.isEnabled()) return;
+
             String excluded;
             if (renamingExcluded.getText() == null || renamingExcluded.getText().isEmpty()) excluded = "none";
             else excluded = renamingExcluded.getText().replace('\n', ',');
@@ -69,7 +71,7 @@ public class ObfuscatorGui extends JFrame {
             if (shuffleTransformer.isSelected()) excludedTransformers.add(shuffleTransformer.getToolTipText());
             if (stringTransformer.isSelected()) excludedTransformers.add(stringTransformer.getToolTipText());
 
-            obfuscate.setVisible(false);
+            obfuscate.setEnabled(false);
             new Thread(() -> {
                 try {
                     new Obfuscator(input, output, renamingExcluded, excludedTransformers, false);
@@ -78,7 +80,7 @@ public class ObfuscatorGui extends JFrame {
                     throwable.printStackTrace();
                     JOptionPane.showMessageDialog(this, throwable.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                obfuscate.setVisible(true);
+                obfuscate.setEnabled(true);
             }).start();
         });
 
