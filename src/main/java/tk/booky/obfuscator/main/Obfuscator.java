@@ -46,45 +46,60 @@ public class Obfuscator {
         JarFile inputJar = new JarFile(inputFile);
 
         try (JarOutputStream output = new JarOutputStream(new FileOutputStream(outputFile))) {
-            System.out.println("Reading jar...");
+            System.out.println("Reading jar entries...");
 
             for (Enumeration<JarEntry> iterator = inputJar.entries(); iterator.hasMoreElements(); ) {
                 JarEntry entry = iterator.nextElement();
+                if (debug) System.out.println("Reading entry \"" + entry.getName() + "\"...");
 
                 try (InputStream input = inputJar.getInputStream(entry)) {
                     if (entry.getName().endsWith(".class")) {
+                        if (debug) System.out.println("Jar entry \"" + entry.getName() + "\" is a class, processing...");
                         ClassReader reader = new ClassReader(input);
                         ClassNode classNode = new ClassNode();
 
                         reader.accept(classNode, 0);
                         classes.add(classNode);
+                        if (debug) System.out.println("Done reading jar class entry \"" + entry.getName() + "\"!");
                     } else try {
+                        if (debug) System.out.println("Jar entry \"" + entry.getName() + "\" is a resource, processing...");
                         output.putNextEntry(new JarEntry(entry.getName()));
+                        if (debug) System.out.println("Writing jar resource entry \"" + entry.getName() + "\"...");
                         StreamUtils.copy(input, output);
+                        if (debug) System.out.println("Done writing jar resource entry \"" + entry.getName() + "\"!");
                     } catch (ZipException exception) {
-                        exception.printStackTrace();
+                        if (debug) System.out.println("Error while reading jar resource entry \"" + entry.getName() + "\": " + exception);
                     }
                 }
             }
 
+            if (debug) System.out.println("Shuffling class entries...");
             Collections.shuffle(classes, random);
+            if (debug) System.out.println("Shuffled class entries!");
 
             System.out.println("Transforming classes...");
             for (AbstractTransformer transformer : transformers) {
-                System.out.println("Running " + transformer.getClass().getSimpleName() + "...");
+                System.out.println("Running \"" + transformer.getName() + "\"...");
                 classes.forEach(transformer::visit);
+                if (debug) System.out.println("Running \"" + transformer.getName() + "\" after visit...");
                 transformer.afterVisit();
             }
-            for (AbstractTransformer transformer : transformers) transformer.after();
+            for (AbstractTransformer transformer : transformers) {
+                if (debug) System.out.println("Running \"" + transformer.getName() + "\" after after visit...");
+                transformer.after();
+            }
 
             System.out.println("Writing classes...");
             for (ClassNode classNode : classes) {
+                if (debug) System.out.println("Writing \"" + classNode.name + ".class\"...");
                 ClassWriter writer = new ClassWriter(ClassWriter.COMPUTE_MAXS);
                 classNode.accept(writer);
 
                 output.putNextEntry(new JarEntry(classNode.name + ".class"));
                 output.write(writer.toByteArray());
+                if (debug) System.out.println("Done writing \"" + classNode.name + ".class\"!");
             }
+            if (debug) System.out.println("Done Obfuscating!");
         }
     }
 

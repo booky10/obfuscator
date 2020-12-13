@@ -22,4 +22,8 @@ public abstract class AbstractTransformer {
 
     public void after() {
     }
+
+    public String getName(){
+        return getClass().getSimpleName();
+    }
 }
