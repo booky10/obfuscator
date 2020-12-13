@@ -63,13 +63,13 @@ public class ObfuscatorGui extends JFrame {
             List<String> renamingExcluded = Arrays.asList(excluded.split(","));
             List<String> excludedTransformers = new ArrayList<>();
 
-            if (accessTransformer.isSelected()) excludedTransformers.add(accessTransformer.getToolTipText());
-            if (constantTransformer.isSelected()) excludedTransformers.add(constantTransformer.getToolTipText());
-            if (crasherTransformer.isSelected()) excludedTransformers.add(crasherTransformer.getToolTipText());
-            if (fieldTransformer.isSelected()) excludedTransformers.add(fieldTransformer.getToolTipText());
-            if (renamingTransformer.isSelected()) excludedTransformers.add(renamingTransformer.getToolTipText());
-            if (shuffleTransformer.isSelected()) excludedTransformers.add(shuffleTransformer.getToolTipText());
-            if (stringTransformer.isSelected()) excludedTransformers.add(stringTransformer.getToolTipText());
+            if (!accessTransformer.isSelected()) excludedTransformers.add(accessTransformer.getToolTipText());
+            if (!constantTransformer.isSelected()) excludedTransformers.add(constantTransformer.getToolTipText());
+            if (!crasherTransformer.isSelected()) excludedTransformers.add(crasherTransformer.getToolTipText());
+            if (!fieldTransformer.isSelected()) excludedTransformers.add(fieldTransformer.getToolTipText());
+            if (!renamingTransformer.isSelected()) excludedTransformers.add(renamingTransformer.getToolTipText());
+            if (!shuffleTransformer.isSelected()) excludedTransformers.add(shuffleTransformer.getToolTipText());
+            if (!stringTransformer.isSelected()) excludedTransformers.add(stringTransformer.getToolTipText());
 
             obfuscate.setEnabled(false);
             new Thread(() -> {
