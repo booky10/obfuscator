@@ -27,6 +27,7 @@ public class ArgumentParser {
 
         options.accepts("gui");
         options.accepts("debug");
+        options.accepts("help");
 
         try {
             OptionSpec<String> optionNoneOptions = options.nonOptions();
@@ -41,10 +42,23 @@ public class ArgumentParser {
             List<String> renamingExcluded = parseStringList(optionSet, optionRenamingExcluded);
             List<String> excludedTransformers = parseStringList(optionSet, optionExcludedTransformers);
 
+            boolean help = optionSet.has("help");
             boolean gui = optionSet.has("gui");
             Boolean debug = optionSet.has("debug");
 
-            if (gui)
+            if (help) {
+                System.out.println("Possible arguments: (\"!\" means, that it is required.)");
+                System.out.println("  --help                                 This prints out this exact dialogue.");
+                System.out.println("! --input <file>                         The input jar, which will be obfuscated.");
+                System.out.println("! --output <file>                        The output jar, where the obfuscated input jar will be written to.");
+                System.out.println("  --renaming-excluded <classes>          The classes, which should not be renamed/relocated.");
+                System.out.println("  --excluded-transformers <transformers> This excludes some obfuscation parts, possible values are:");
+                System.out.println("                                         access, constant, crasher, field, renaming, shuffle and string.");
+                System.out.println("  --gui                                  Activate GUI mode. This overrides everything, except --help.");
+                System.out.println("  --debug                                Activate debug mode. Warning: This will spam some messages.");
+                System.exit(0);
+                return null;
+            } else if (gui)
                 return new ProgramOptions();
             else
                 return new ProgramOptions(inputFile, outputFile, renamingExcluded, excludedTransformers, debug);
