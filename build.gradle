@@ -12,6 +12,9 @@ dependencies {
     implementation 'net.sf.jopt-simple:jopt-simple:5.0.2'
     implementation 'org.ow2.asm:asm-debug-all:5.2'
     implementation 'com.intellij:forms_rt:7.0.3'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
 }
 
 group = 'tk.booky'
@@ -26,5 +29,15 @@ application {
 jar {
     manifest {
         attributes['Main-Class'] = 'tk.booky.obfuscator.main.Boot'
+    }
+}
+
+test {
+    testLogging {
+        showStandardStreams = true
+    }
+
+    useJUnitPlatform {
+        includeEngines 'junit-jupiter'
     }
 }
