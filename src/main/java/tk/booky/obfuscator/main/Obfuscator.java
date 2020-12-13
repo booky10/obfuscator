@@ -20,12 +20,17 @@ public class Obfuscator {
 
     private final Random random;
     private final List<ClassNode> classes = new ArrayList<>();
+    private static final List<String> canBeExcluded = Arrays.asList("access", "constant", "crasher", "field", "renaming", "shuffle", "string");
 
     public Obfuscator(File inputFile, File outputFile, List<String> renamingExcluded, List<String> excludedTransformers, Boolean debug) throws IOException {
         if (!inputFile.exists()) throw new IOException("Input jar does not exits!");
 
         Thread.currentThread().setName("Obfuscator Thread");
         random = new Random();
+
+        for (String transformer : excludedTransformers)
+            if (!canBeExcluded.contains(transformer))
+                System.out.println("\"" + transformer + "\" does not exits!");
 
         List<AbstractTransformer> transformers = new ArrayList<>();
         if (!excludedTransformers.contains("string"))
