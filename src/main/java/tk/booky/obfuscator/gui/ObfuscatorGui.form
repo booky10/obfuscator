@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="tk.booky.obfuscator.gui.ObfuscatorGui">
-  <grid id="27dc6" binding="panel" layout-manager="GridLayoutManager" row-count="4" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="panel" layout-manager="GridLayoutManager" row-count="8" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="15" left="15" bottom="15" right="15"/>
     <constraints>
-      <xy x="11" y="20" width="509" height="400"/>
+      <xy x="11" y="20" width="612" height="583"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
       <component id="dc282" class="javax.swing.JTextField" binding="inputJarText">
         <constraints>
-          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+          <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
@@ -21,7 +21,7 @@
       </component>
       <scrollpane id="9501d" binding="textPane">
         <constraints>
-          <grid row="3" column="0" row-span="1" col-span="3" vsize-policy="7" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="7" column="0" row-span="1" col-span="4" vsize-policy="7" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="500" height="500"/>
           </grid>
         </constraints>
@@ -40,7 +40,7 @@
       </scrollpane>
       <component id="7285a" class="javax.swing.JButton" binding="browseInput">
         <constraints>
-          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Browse"/>
@@ -48,7 +48,7 @@
       </component>
       <component id="809a3" class="javax.swing.JTextField" binding="outputJarText">
         <constraints>
-          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <toolTipText value="The jar which will be obfuscated"/>
@@ -56,7 +56,7 @@
       </component>
       <component id="86828" class="javax.swing.JButton" binding="browseOutput">
         <constraints>
-          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Browse"/>
@@ -86,11 +86,82 @@
       </component>
       <component id="c7263" class="javax.swing.JButton" binding="obfuscate">
         <constraints>
-          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Obfuscate"/>
           <toolTipText value="Start the obfuscation process"/>
+        </properties>
+      </component>
+      <component id="c8d50" class="javax.swing.JLabel" binding="transformersLabel">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Transformers"/>
+        </properties>
+      </component>
+      <component id="eb685" class="javax.swing.JCheckBox" binding="accessTransformer">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <selected value="true"/>
+          <text value="Randomize Access"/>
+        </properties>
+      </component>
+      <component id="b2861" class="javax.swing.JCheckBox" binding="constantTransformer">
+        <constraints>
+          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <selected value="true"/>
+          <text value="Obfuscate Constants"/>
+        </properties>
+      </component>
+      <component id="96f67" class="javax.swing.JCheckBox" binding="crasherTransformer">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <selected value="true"/>
+          <text value="Crash Decompiler"/>
+        </properties>
+      </component>
+      <component id="44826" class="javax.swing.JCheckBox" binding="fieldTransformer">
+        <constraints>
+          <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <selected value="true"/>
+          <text value="Rename Fields"/>
+        </properties>
+      </component>
+      <component id="7be50" class="javax.swing.JCheckBox" binding="renamingTransformer">
+        <constraints>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <selected value="true"/>
+          <text value="Rename Classes"/>
+        </properties>
+      </component>
+      <component id="39471" class="javax.swing.JCheckBox" binding="shuffleTransformer">
+        <constraints>
+          <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <selected value="true"/>
+          <text value="Shuffle Components"/>
+        </properties>
+      </component>
+      <component id="bf25d" class="javax.swing.JCheckBox" binding="stringTransformer">
+        <constraints>
+          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <selected value="true"/>
+          <text value="Transform Strings"/>
         </properties>
       </component>
     </children>
